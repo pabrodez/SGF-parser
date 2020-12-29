@@ -1,2 +1,2 @@
-import { SgfParser } from "./SgfParser"
-export default SgfParser
+import { SgfParser} from "./SgfParser";
+export default SgfParser;
