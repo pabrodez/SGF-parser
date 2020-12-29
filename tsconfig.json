@@ -1,0 +1,25 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "outDir": "dist",
+    "declarationDir": "dist/types",
+    "target": "ES6",
+    "lib": [
+      "esnext"
+    ],
+    "sourceMap": true,
+    "module": "es2020",
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "declaration": true,
+    "removeComments": true,
+  },
+  "include": [
+    "src/**/*.ts",
+    "tests/**/*.test.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}
