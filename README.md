@@ -11,8 +11,8 @@ A SGF text parser written in Typescript
 npm install ts-sgf-parser
 ```
 ```javascript
-import SgfParser from 'ts-sgf-parser'
-const SgfParser = require('ts-sgf-parser').default
+// import SgfParser from 'ts-sgf-parser'
+const SgfParser = require('ts-sgf-parser')
 
 const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[dd];B[ad];W[bd])(;B[hh];W[hg]))`)
 ```
@@ -20,6 +20,7 @@ const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[
 ## Tools
 - Typescript
 - Jest
+- Webpack
 
 ## TODO:
 

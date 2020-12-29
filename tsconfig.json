@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "strict": true,
-    "outDir": "dist",
+    // "outDir": "dist",
+    // "rootDir": "./src",
     "declarationDir": "dist/types",
-    "target": "ES6",
+    "target": "esnext",
     "lib": [
       "esnext"
     ],
-    "sourceMap": true,
+    "sourceMap": false,
     "module": "ES2015",
     "moduleResolution": "node",
     "esModuleInterop": true,
@@ -15,11 +16,11 @@
     "removeComments": true,
   },
   "include": [
-    "src/**/*.ts",
-    "tests/**/*.test.ts"
+    "src/**/*.ts"
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "tests/**/*.test.ts"
   ]
 }
