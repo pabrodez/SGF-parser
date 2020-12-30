@@ -1,19 +1,24 @@
 {
   "name": "ts-sgf-parser",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "A parser for SGF written in Typescript",
-  "module": "./dist/index.mjs",
-  "main": "./dist/index.js",
-  "unpkg": "./dist/index.min.js",
-  "types": "./dist/types/index.d.ts",
+  "main": "./dist/index.umd.js",
+  "module": "./dist/index.esm.js",
+  "types": "./dist/ts-sgf-parser.d.ts",
+  "exports": {
+    ".": {
+      "require": "./dist/index.umd.js",
+      "import": "./dist/index.esm.js"
+    }
+  },
   "files": [
     "dist"
   ],
   "scripts": {
-    "bundle": "rollup -c",
+    "bundle": "rollup -c rollup.config.js",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "type-emit": "tsc --emitDeclarationOnly"
+    "build:types": "tsc -t esnext --moduleResolution node -d --emitDeclarationOnly --outFile ./dist/ts-sgf-parser.d.ts ./src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -29,6 +34,7 @@
     "jest": "^26.6.3",
     "rollup": "^2.35.1",
     "ts-jest": "^26.4.4",
+    "tslib": "^2.0.3",
     "typescript": "^4.1.3"
   }
 }
