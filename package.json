@@ -18,7 +18,7 @@
     "bundle": "rollup -c rollup.config.js",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "build:types": "tsc -t esnext --moduleResolution node -d --emitDeclarationOnly --outFile ./dist/ts-sgf-parser.d.ts ./src/index.ts"
+    "build:types": "tsc -t esnext --moduleResolution node -d --emitDeclarationOnly --outFile ./dist/ts-sgf-parser.d.ts ./src/ts-sgf-parser.ts"
   },
   "repository": {
     "type": "git",

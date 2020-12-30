@@ -20,7 +20,7 @@ const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[
 ## Tools
 - Typescript
 - Jest
-- Webpack
+- Rollup
 
 ## TODO:
 
