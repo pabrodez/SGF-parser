@@ -11,11 +11,21 @@ A SGF text parser written in Typescript
 npm install ts-sgf-parser
 ```
 ```javascript
-// import SgfParser from 'ts-sgf-parser'
+import { Sgfparser } from 'ts-sgf-parser'
 const SgfParser = require('ts-sgf-parser')
 
 const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[dd];B[ad];W[bd])(;B[hh];W[hg]))`)
+
+parser.moveNode().moveNode().currentNode;
+parser.backNode(2).currentSequence
+parser.getMainLine()
+parser.variationsFromCurrentNode()
+parser.chooseVariationIndex(2).moveNode(6).currentNode
+parser.backToClosestMain()
+
 ```
+
+## An excuse to learn Typescript and testing with Jest
 
 ## Tools
 - Typescript
@@ -27,4 +37,6 @@ const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[
 - [ ] Support for setup properties and list of points values in Properties (AB, AW properties)
 - [ ] Pretty printing
 - [ ] Read text files via node
-- [ ] Add webpack
+- [ ] Improve navegability
+- [ ] Minify outputs
+- [ ] Try [TypeDoc](https://typedoc.org/)

@@ -180,7 +180,7 @@ export class SgfParser {
             : []
     }
 
-    parseCollection(str: string): Sequence {
+    private parseCollection(str: string): Sequence {
         const collection: Sequence | undefined = createTreeNode(str)
 
         if (collection === undefined) throw 'Collection parsed is undefined\nCheck validity of SGF text'
