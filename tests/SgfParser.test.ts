@@ -22,13 +22,9 @@ describe('Next node', () => {
         const parser = new SgfParser(sampleCollections[0][1])
         const expected = {
             move: undefined,
-            properties: [{ propName: 'FF', propValue: '4' }, { propName: 'GM', propValue: '1' }, { propName: 'SZ', propValue: '19' }]
+            properties: [{ propName: 'FF', propValue: ['4'] }, { propName: 'GM', propValue: ['1'] }, { propName: 'SZ', propValue: ['19'] }]
         }
-
-        for (let i = 0; i < 7; i++) {
-            parser.nextNode()
-        }
-
+        parser.moveNode(7)
         expect(parser.currentNode).toEqual(expected)
     })
 
@@ -57,31 +53,29 @@ describe('Variations', () => {
                 player: 'B',
                 coords: 'cc'
             },
-            properties: [{ propName: 'N', propValue: 'Var A' }]
+            properties: [{ propName: 'N', propValue: ['Var A'] }]
         }, {
             move: {
                 player: 'B',
                 coords: 'hh'
             },
-            properties: [{ propName: 'N', propValue: 'Var B' }]
+            properties: [{ propName: 'N', propValue: ['Var B'] }]
         },
         {
             move: {
                 player: 'B',
                 coords: 'gg'
             },
-            properties: [{ propName: 'N', propValue: 'Var C' }]
+            properties: [{ propName: 'N', propValue: ['Var C'] }]
         }]
-        for (let i = 0; i < 2; i++) {
-            parser.nextNode()
-        }
+        parser.moveNode(2)
         const result = parser.variationsFromCurrentNode().map(seq => seq.nodes[0])
         expect(JSON.stringify(result)).toEqual(JSON.stringify(expected))
     })
 
     test('Returns empty when no variations', () => {
         const parser = new SgfParser(sampleCollections[4][1])
-        parser.nextNode()
+        parser.moveNode()
         expect(parser.variationsFromCurrentNode()).toStrictEqual([])
     })
 })
@@ -165,6 +159,28 @@ describe('Back to closest main', () => {
         const result = parser.moveNode(4).chooseVariationIndex(1).moveNode().backToClosestMain().currentSequence.id
 
         expect(result).toBe(expected)
-    })        
+    })
 })
 
+test('Get sequence by Id', () => {
+    const parser = new SgfParser(sampleCollections[3][1])
+    const expected = {
+        id: 3,
+        nodes: [
+            {move: {
+                player: 'B',
+                coords: 'ad'
+            },
+            properties: []},
+            {move: {
+                player: 'W',
+                coords: 'bd'
+            },
+            properties: []}
+        ]
+    }
+    // remove subsequences to avoid circular reference
+    const sequence = parser.getSequence(3)
+    const result =  {id: sequence?.id, nodes: sequence?.nodes}
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(expected))
+})

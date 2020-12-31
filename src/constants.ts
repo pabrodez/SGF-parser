@@ -76,7 +76,9 @@ const PropDesc = {
   WL: 'White time left',
   BL: 'Black time left',
   N: 'Node name',
-  GM: 'Type of game'
+  GM: 'Type of game',
+  AW: 'Add white (list of stones)',
+  AB: 'Add black (list of stones)'
 } as const
 
 export { SAMPLES, sampleCollections, PropDesc };

@@ -12,12 +12,36 @@ npm install ts-sgf-parser
 ```
 ```javascript
 import { Sgfparser } from 'ts-sgf-parser'
-const SgfParser = require('ts-sgf-parser')
+const SgfParser = require('ts-sgf-parser').SgfParser
 
 const parser = new SgfParser(String.raw`(;FF[4]GM[1]SZ[19];B[aa];W[bb](;B[cc];W[dd];B[ad];W[bd])(;B[hh];W[hg]))`)
 
 parser.moveNode().moveNode().currentNode;
+// {
+//   "move": {
+//     "player": "W",
+//     "coords": "bb"
+//   },
+//   "properties": []
+// }
 parser.backNode(2).currentSequence
+// {id: 1  ​
+//   nodes: [{ move: undefined, properties: […]},
+//   { move: {…
+//     }, properties: []
+//   }, { move: {…
+//     }, properties: []
+//   }],
+//   ​
+//   subSequences: [
+//     { id: 2, nodes: […
+//       ], subSequences: [], …
+//     },
+//     { id: 3, nodes: […
+//       ], subSequences: [], …
+//     }
+//   ]
+// }
 parser.getMainLine()
 parser.variationsFromCurrentNode()
 parser.chooseVariationIndex(2).moveNode(6).currentNode
@@ -34,9 +58,6 @@ parser.backToClosestMain()
 
 ## TODO:
 
-- [ ] Support for setup properties and list of points values in Properties (AB, AW properties)
-- [ ] Pretty printing
-- [ ] Read text files via node
+- [X] Support for setup properties and list of points values in Properties (AB, AW properties)
 - [ ] Improve navegability
-- [ ] Minify outputs
 - [ ] Try [TypeDoc](https://typedoc.org/)

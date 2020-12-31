@@ -7,8 +7,8 @@
   "types": "./dist/ts-sgf-parser.d.ts",
   "exports": {
     ".": {
-      "require": "./dist/index.umd.js",
-      "import": "./dist/index.esm.js"
+      "import": "./dist/index.esm.js",
+      "require": "./dist/index.umd.js"
     }
   },
   "files": [
@@ -18,7 +18,7 @@
     "bundle": "rollup -c rollup.config.js",
     "test": "jest",
     "type-check": "tsc --noEmit",
-    "build:types": "tsc -t esnext --moduleResolution node -d --emitDeclarationOnly --outFile ./dist/ts-sgf-parser.d.ts ./src/ts-sgf-parser.ts"
+    "build:types": "tsc -t esnext -d --moduleResolution node --emitDeclarationOnly --outFile ./dist/ts-sgf-parser.d.ts ./src/ts-sgf-parser.ts"
   },
   "repository": {
     "type": "git",

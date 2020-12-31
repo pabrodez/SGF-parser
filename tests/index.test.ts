@@ -1,5 +1,10 @@
 import { sampleCollections } from "../src/constants";
-import { createTreeNode, formatSgf, getArrayOfParenthesesIndexes, getNodeMove, getNodeProperties, splitNodesFromStr, } from "../src/utils";
+import {
+    createTreeNode, formatSgf, getArrayOfParenthesesIndexes,
+    getNodeMove, getNodeProperties, splitNodeProperties,
+    splitNodesFromStr, getPropertyValues, extractCompressedPointList,
+    createNodeFromStr
+} from "../src/utils";
 
 // https://homepages.cwi.nl/~aeb/go/misc/sgf.html:
 // That is, an SGF file (Collection) is the concatenation of zero or more GameTrees.
@@ -116,22 +121,79 @@ describe('Get node move', () => {
 
 const propertiesTest = [
     ['white',
-        'PW[jd]WL[1]W[ci]C[Black time left: 105.6 sec Black stones left (;in this; byo-yomi period): 10]',
+        'PW[jd]WL[1]C[Black time left: 105.6 sec Black stones left (;in this; byo-yomi period): 10]AB[ta:ud]',
         [
-            { propName: 'PW', propValue: 'jd' },
-            { propName: 'WL', propValue: '1' },
-            { propName: 'C', propValue: 'Black time left: 105.6 sec Black stones left (;in this; byo-yomi period): 10' }
+            { propName: 'PW', propValue: ['jd'] },
+            { propName: 'WL', propValue: ['1'] },
+            { propName: 'C', propValue: ['Black time left: 105.6 sec Black stones left (;in this; byo-yomi period): 10'] },
+            { propName: 'AB', propValue: ['ta', 'tb', 'tc', 'td', 'ua', 'ub', 'uc', 'ud'] }
         ]
     ],
     ['black',
-        'B[cn]C[White time left: 300 sec]BL[105.6]PB[10]TB[aa]KO[90]',
-        [{ propName: 'C', propValue: 'White time left: 300 sec' },
-        { propName: 'BL', propValue: '105.6' },
-        { propName: 'PB', propValue: '10' },
-        { propName: 'TB', propValue: 'aa' },
-        { propName: 'KO', propValue: '90' }]
+        'C[White time left: 300 sec]BL[105.6]PB[10]TB[aa]KO[90]',
+        [{ propName: 'C', propValue: ['White time left: 300 sec'] },
+        { propName: 'BL', propValue: ['105.6'] },
+        { propName: 'PB', propValue: ['10'] },
+        { propName: 'TB', propValue: ['aa'] },
+        { propName: 'KO', propValue: ['90'] }]
     ]
 ]
+
+describe('Split node properties', () => {
+    test('Return array of given node properties like [AB[cd], BC[aa]]', () => {
+        const input = String.raw`FF[4]AP[Primiview:3.1]GM[1]SZ[19]GN[Gametree 1: properties]US[Arno Hollosi]`
+        const expected = [
+            "FF[4]",
+            "AP[Primiview:3.1]",
+            "GM[1]",
+            "SZ[19]",
+            "GN[Gametree 1: properties]",
+            "US[Arno Hollosi]"
+        ]
+        const result = splitNodeProperties(input)
+        expect(result).toEqual(expected)
+    })
+    test('Works with point lists', () => {
+        const input = String.raw`AB[fq][eq][dr][ds][dq][dp]AW[pd][oq][op][pp]N[Markup]C[Position \]AC[aa\]set up without compressed point lists.]`
+        const expected = [
+            "AB[fq][eq][dr][ds][dq][dp]",
+            "AW[pd][oq][op][pp]",
+            "N[Markup]",
+            "C[Position \\]AC[aa\\]set up without compressed point lists.]"
+        ]
+        const result = splitNodeProperties(input)
+        expect(result).toEqual(expected)
+    })
+})
+
+test('Extracts compressed point list to array of strings of points', () => {
+    const input = "kn:lq"
+    const expected = ["kn", "ko", "kp", "kq", "ln", "lo", "lp", "lq"]
+    const result = extractCompressedPointList(input)
+    expect(result).toEqual(expected)
+})
+
+test('Get a property values', () => {
+    const input = String.raw`AB[ab:ae][bb][\]][aa][]`
+    const expected = ["ab", "ac", "ad", "ae", "bb", "\\]", "aa", ""]
+    const result = getPropertyValues(input)
+    expect(result).toEqual(expected)
+})
+
+test('Create a node from a string', () => {
+    const input = 'B[ff]BL[105.6]PB[10]AB[ta:ud]KO[]'
+    const expected = {
+        move: { player: 'B', coords: 'ff' },
+        properties: [
+            { propName: 'BL', propValue: ['105.6'] },
+            { propName: 'PB', propValue: ['10'] },
+            { propName: 'AB', propValue: ['ta', 'tb', 'tc', 'td', 'ua', 'ub', 'uc', 'ud'] },
+            { propName: 'KO', propValue: [''] }
+        ]
+    }
+    const result = createNodeFromStr(input)
+    expect(JSON.stringify(result)).toEqual(JSON.stringify(expected))
+})
 
 describe('Get node properties', () => {
     test.each(propertiesTest)('player %s', (description, input, expected) => {
@@ -146,7 +208,7 @@ const treeNodeTest = [
         nodes: [
             {
                 move: undefined,
-                properties: [{ propName: 'FF', propValue: '4' }, { propName: 'GM', propValue: '1' }, { propName: 'SZ', propValue: '19' }]
+                properties: [{ propName: 'FF', propValue: ['4'] }, { propName: 'GM', propValue: ['1'] }, { propName: 'SZ', propValue: ['19'] }]
             },
             {
                 move: {

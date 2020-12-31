@@ -9,16 +9,16 @@ export interface Parentheses {
 
 export interface Property {
     propName: PropName;
-    propValue: string;
+    propValue: string[]
 }
 
 export interface Move {
-    player: "B" | "W";
+    player: "B" | "W"; 
     coords: string;
 }
 
 export interface Node {
-    properties: Property[] | undefined;
+    properties: Property[];
     move: Move | undefined;
   }
   

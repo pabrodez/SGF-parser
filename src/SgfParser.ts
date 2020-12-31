@@ -60,7 +60,7 @@ export class SgfParser {
     }
 
     getMainLine(): Sequence[] {
-        let mainSeqs: Sequence[] = [...this._collection.subSequences]
+        let mainSeqs: Sequence[] = [{ ...this._collection }]
 
         let currentSequence: Sequence = this._collection;
         let firstChild = this.getFirstChild(currentSequence)
@@ -143,13 +143,13 @@ export class SgfParser {
         return this
     }
 
-    previousNode(): Node {
-        this.backNode()
+    previousNode(times?: number): Node {
+        this.backNode(times)
         return this._currentNode
     }
 
-    nextNode(): Node {
-        this.moveNode()
+    nextNode(times?: number): Node {
+        this.moveNode(times)
         return this._currentNode
     }
 
@@ -195,14 +195,4 @@ export class SgfParser {
     get currentNode(): Node {
         return this._currentNode
     }
-
-    prettyPrint(): string | undefined {
-        const gameInfo: string | undefined = this.getGameInfo()
-        ?.reduce((acc, curr) => `${acc} ${curr.propName}: ${curr.propValue}`, "")
-        
-
-        return gameInfo 
-    }
-
-
 }
